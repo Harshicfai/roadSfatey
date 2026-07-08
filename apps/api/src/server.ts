@@ -1,6 +1,7 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
+import rateLimit from "express-rate-limit";
 import { createServer } from "http";
 import { Pool } from "pg";
 import { Server as SocketIOServer } from "socket.io";
@@ -30,6 +31,16 @@ const io = new SocketIOServer(httpServer, {
 
 app.use(cors({ origin: CORS_ORIGIN }));
 app.use(express.json());
+
+const appLimiter = rateLimit({
+  windowMs: 60_000,
+  limit: 120,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+  message: { error: "Too many requests. Please try again shortly." },
+});
+
+app.use(appLimiter);
 
 const contactSchema = z.object({
   userId: z.string().min(1).optional(),

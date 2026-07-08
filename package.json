@@ -1,0 +1,15 @@
+{
+  "name": "roadsfatey",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace web",
+    "dev:api": "npm run dev --workspace api",
+    "build": "npm run build --workspace api && npm run build --workspace web",
+    "lint": "npm run lint --workspace web",
+    "test": "npm run test --workspace api"
+  }
+}
